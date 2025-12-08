@@ -88,7 +88,17 @@ require('gitsigns').setup({
   end
 })
 
-vim.lsp.enable({"lua_ls","css-lsp","css-variables-language-server","tsgo"})
+vim.lsp.enable({
+  "css-lsp", "css-variables-language-server",
+  "docker-copmose-language-service", "docker-language-server",
+  "eslint-lsp",
+  "gopls",
+  "html-lsp",
+  "lua-language-server",
+  "stylua",
+  "tailwindcss-language-server",
+  "tsgo"
+})
 
 local function pack_clean()
 	local active_plugins = {}
