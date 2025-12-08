@@ -10,6 +10,7 @@ vim.pack.add({
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
 	{ src = "https://github.com/saghen/blink.cmp", version = vim.version.range("*") },
 	{ src = "https://github.com/lewis6991/gitsigns.nvim" },
+	{ src = "https://github.com/ibhagwan/fzf-lua" },
 })
 
 local default_color = "rose-pine"
@@ -26,6 +27,91 @@ vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "go", "markdown", "lua", "typescript", "javascript", "prisma" },
 	callback = function()
 		vim.treesitter.start()
+	end,
+})
+
+
+-- local actions = require("fzf-lua.actions")
+require("fzf-lua").setup({
+  keymap = {
+    fzf = {
+      ["ctrl-q"] = "select-all+accept",
+    },
+  },
+})
+
+local fzf = require("fzf-lua")
+vim.keymap.set("n", "<leader>ff", function()
+	fzf.files()
+end, { desc = "FzfLua Files" })
+vim.keymap.set("n", "<leader>fb", function()
+	fzf.buffers()
+end, { desc = "FzfLua Buffers" })
+-- Live Grep (search in current project)
+vim.keymap.set("n", "<leader>fs", function()
+	fzf.live_grep()
+end, { desc = "FzfLua Live Grep" })
+-- Old files (recently opened files)
+vim.keymap.set("n", "<leader>fo", function()
+	fzf.oldfiles()
+end, { desc = "FzfLua Old Files" })
+-- Git files
+vim.keymap.set("n", "<leader>fg", function()
+	fzf.git_files()
+end, { desc = "FzfLua Git Files" })
+-- Help tags
+vim.keymap.set("n", "<leader>fh", function()
+	fzf.help_tags()
+end, { desc = "FzfLua Help Tags" })
+
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(event)
+		-- NOTE: Remember that Lua is a real programming language, and as such it is possible
+		-- to define small helper and utility functions so you don't have to repeat yourself.
+		--
+		-- In this case, we create a function that lets us more easily define mappings specific
+		-- for LSP related items. It sets the mode, buffer and description for us each time.
+		local map = function(keys, func, desc, mode)
+			mode = mode or "n"
+			vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+		end
+
+		-- Rename the variable under your cursor.
+		--  Most Language Servers support renaming across files, etc.
+		map("grn", vim.lsp.buf.rename, "[R]e[n]ame")
+
+		-- Execute a code action, usually your cursor needs to be on top of an error
+		-- or a suggestion from your LSP for this to activate.
+		map("gra", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
+
+		-- Find references for the word under your cursor.
+		map("grr", require("fzf-lua").lsp_references, "[G]oto [R]eferences")
+
+		-- Jump to the implementation of the word under your cursor.
+		--  Useful when your language has ways of declaring types without an actual implementation.
+		map("gri", require("fzf-lua").lsp_implementations, "[G]oto [I]mplementation")
+
+		-- Jump to the definition of the word under your cursor.
+		--  This is where a variable was first declared, or where a function is defined, etc.
+		--  To jump back, press <C-t>.
+		map("grd", require("fzf-lua").lsp_definitions, "[G]oto [D]efinition")
+
+		-- WARN: This is not Goto Definition, this is Goto Declaration.
+		--  For example, in C this would take you to the header.
+		map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+
+		-- Fuzzy find all the symbols in your current document.
+		--  Symbols are things like variables, functions, types, etc.
+		map("gO", require("fzf-lua").lsp_document_symbols, "Open Document Symbols")
+
+		-- Fuzzy find all the symbols in your current workspace.
+		--  Similar to document symbols, except searches over your entire project.
+		map("gW", require("fzf-lua").lsp_live_workspace_symbols, "Open Workspace Symbols")
+
+		-- Jump to the type of the word under your cursor.
+		--  Useful when you're not sure what type a variable is and you want to see
+		--  the definition of its *type*, not where it was *defined*.
+		map("grt", require("fzf-lua").lsp_typedefs, "[G]oto [T]ype Definition")
 	end,
 })
 
