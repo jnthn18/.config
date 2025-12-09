@@ -2,16 +2,16 @@ require("jmore.core")
 
 vim.pack.add({
 	{ src = "https://github.com/rose-pine/neovim" },
-	{ src = "https://github.com/neovim/nvim-lspconfig" },
-	{ src = "https://github.com/mason-org/mason.nvim" },
-	{ src = "https://github.com/mason-org/mason-lspconfig.nvim" },
+ 	{ src = "https://github.com/neovim/nvim-lspconfig" },
+ 	{ src = "https://github.com/mason-org/mason.nvim" },
+ 	{ src = "https://github.com/mason-org/mason-lspconfig.nvim" },
 	{ src = "https://github.com/j-hui/fidget.nvim" },
 	{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
 	{ src = "https://github.com/saghen/blink.cmp", version = vim.version.range("*") },
 	{ src = "https://github.com/lewis6991/gitsigns.nvim" },
 	{ src = "https://github.com/ibhagwan/fzf-lua" },
-})
+ })
 
 local default_color = "rose-pine"
 vim.cmd("colorscheme " .. default_color)
@@ -30,8 +30,6 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-
--- local actions = require("fzf-lua.actions")
 require("fzf-lua").setup({
   keymap = {
     fzf = {
