@@ -12,6 +12,7 @@ vim.pack.add({
 	{ src = "https://github.com/lewis6991/gitsigns.nvim" },
 	{ src = "https://github.com/ibhagwan/fzf-lua" },
 	{ src = "https://github.com/stevearc/conform.nvim" },
+	{ src = "https://github.com/folke/which-key.nvim" },
 })
 
 local default_color = "rose-pine"
@@ -40,28 +41,28 @@ require("fzf-lua").setup({
 })
 
 local fzf = require("fzf-lua")
-vim.keymap.set("n", "<leader>ff", function()
+vim.keymap.set("n", "<leader>sf", function()
 	fzf.files()
-end, { desc = "FzfLua Files" })
-vim.keymap.set("n", "<leader>fb", function()
+end, { desc = "[S]earch [F]iles" })
+vim.keymap.set("n", "<leader>sb", function()
 	fzf.buffers()
-end, { desc = "FzfLua Buffers" })
+end, { desc = "[S]earch [B]uffers" })
 -- Live Grep (search in current project)
-vim.keymap.set("n", "<leader>fs", function()
+vim.keymap.set("n", "<leader>ss", function()
 	fzf.live_grep()
-end, { desc = "FzfLua Live Grep" })
+end, { desc = "[S]earch [S]trings" })
 -- Old files (recently opened files)
-vim.keymap.set("n", "<leader>fo", function()
+vim.keymap.set("n", "<leader>so", function()
 	fzf.oldfiles()
-end, { desc = "FzfLua Old Files" })
+end, { desc = "[S]earch [O]ld files" })
 -- Git files
-vim.keymap.set("n", "<leader>fg", function()
+vim.keymap.set("n", "<leader>sg", function()
 	fzf.git_files()
-end, { desc = "FzfLua Git Files" })
+end, { desc = "[S]earch [G]it" })
 -- Help tags
-vim.keymap.set("n", "<leader>fh", function()
+vim.keymap.set("n", "<leader>sh", function()
 	fzf.help_tags()
-end, { desc = "FzfLua Help Tags" })
+end, { desc = "[S]earch [H]elp Tags" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(event)
@@ -170,27 +171,27 @@ require("gitsigns").setup({
 		end)
 
 		-- Actions
-		map("n", "<leader>hs", gitsigns.stage_hunk)
-		map("n", "<leader>hr", gitsigns.reset_hunk)
+		map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "Hunk [S]tage" })
+		map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "Hunk [R]eset" })
 
 		map("v", "<leader>hs", function()
 			gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-		end)
+		end, { desc = "Hunk [S]tage" })
 
 		map("v", "<leader>hr", function()
 			gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-		end)
+		end, { desc = "Hunk [R]eset" })
 
-		map("n", "<leader>hS", gitsigns.stage_buffer)
-		map("n", "<leader>hR", gitsigns.reset_buffer)
-		map("n", "<leader>hp", gitsigns.preview_hunk)
-		map("n", "<leader>hi", gitsigns.preview_hunk_inline)
+		map("n", "<leader>hS", gitsigns.stage_buffer, { desc = "Stage Buffer" })
+		map("n", "<leader>hR", gitsigns.reset_buffer, { desc = "Reset Buffer" })
+		map("n", "<leader>hp", gitsigns.preview_hunk, { desc = "Preview Hunk" })
+		map("n", "<leader>hi", gitsigns.preview_hunk_inline, { desc = "Preview Hunk Inline" })
 
 		map("n", "<leader>hb", function()
 			gitsigns.blame_line({ full = true })
-		end)
+		end, { desc = "Blame Line" })
 
-		map("n", "<leader>hd", gitsigns.diffthis)
+		map("n", "<leader>hd", gitsigns.diffthis, { desc = "Diff This" })
 
 		map("n", "<leader>hD", function()
 			gitsigns.diffthis("~")
@@ -202,12 +203,22 @@ require("gitsigns").setup({
 		map("n", "<leader>hq", gitsigns.setqflist)
 
 		-- Toggles
-		map("n", "<leader>tb", gitsigns.toggle_current_line_blame)
-		map("n", "<leader>tw", gitsigns.toggle_word_diff)
+		map("n", "<leader>tb", gitsigns.toggle_current_line_blame, { desc = "Toggle line blame" })
+		map("n", "<leader>tw", gitsigns.toggle_word_diff, { desc = "Toggle word diff" })
 
 		-- Text object
-		map({ "o", "x" }, "ih", gitsigns.select_hunk)
+		map({ "o", "x" }, "ih", gitsigns.select_hunk, { desc = "Select Hunk" })
 	end,
+})
+
+require("which-key").setup({
+	spec = {
+		{ "<leader>h", group = "Git [H]unk" },
+		{ "<leader>s", group = "[S]earch" },
+		{ "<leader>p", group = "Vim Pack" },
+		{ "<leader>t", group = "[T]oggle" },
+		{ "gr", group = "LSP Commands" },
+	},
 })
 
 local function pack_clean()
@@ -235,4 +246,4 @@ local function pack_clean()
 	end
 end
 
-vim.keymap.set("n", "<leader>pc", pack_clean)
+vim.keymap.set("n", "<leader>pc", pack_clean, { desc = "which_key_ignore" })
