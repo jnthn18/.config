@@ -5,6 +5,7 @@ vim.pack.add({
 	{ src = "https://github.com/neovim/nvim-lspconfig" },
 	{ src = "https://github.com/mason-org/mason.nvim" },
 	{ src = "https://github.com/mason-org/mason-lspconfig.nvim" },
+	{ src = "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim" },
 	{ src = "https://github.com/j-hui/fidget.nvim" },
 	{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
@@ -19,8 +20,23 @@ local default_color = "rose-pine"
 vim.cmd("colorscheme " .. default_color)
 
 require("mason").setup()
-require("mason-lspconfig").setup({
-	ensure_installed = { "lua_ls", "gopls", "ts_ls", "eslint" },
+require("mason-lspconfig").setup()
+require("mason-tool-installer").setup({
+	ensure_installed = {
+		"eslint",
+		"eslint_d",
+		"gopls",
+		"gofumpt",
+		"goimports-reviser",
+		"gopls",
+		"gotests",
+		"lua_ls",
+		"prettier",
+		"prettierd",
+		"prismals",
+		"stylua",
+		"ts_ls",
+	},
 })
 require("fidget").setup()
 require("blink.cmp").setup()
