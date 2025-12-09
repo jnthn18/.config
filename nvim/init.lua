@@ -2,16 +2,17 @@ require("jmore.core")
 
 vim.pack.add({
 	{ src = "https://github.com/rose-pine/neovim" },
- 	{ src = "https://github.com/neovim/nvim-lspconfig" },
- 	{ src = "https://github.com/mason-org/mason.nvim" },
- 	{ src = "https://github.com/mason-org/mason-lspconfig.nvim" },
+	{ src = "https://github.com/neovim/nvim-lspconfig" },
+	{ src = "https://github.com/mason-org/mason.nvim" },
+	{ src = "https://github.com/mason-org/mason-lspconfig.nvim" },
 	{ src = "https://github.com/j-hui/fidget.nvim" },
 	{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
 	{ src = "https://github.com/saghen/blink.cmp", version = vim.version.range("*") },
 	{ src = "https://github.com/lewis6991/gitsigns.nvim" },
 	{ src = "https://github.com/ibhagwan/fzf-lua" },
- })
+	{ src = "https://github.com/stevearc/conform.nvim" },
+})
 
 local default_color = "rose-pine"
 vim.cmd("colorscheme " .. default_color)
@@ -31,11 +32,11 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 require("fzf-lua").setup({
-  keymap = {
-    fzf = {
-      ["ctrl-q"] = "select-all+accept",
-    },
-  },
+	keymap = {
+		fzf = {
+			["ctrl-q"] = "select-all+accept",
+		},
+	},
 })
 
 local fzf = require("fzf-lua")
@@ -110,6 +111,27 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		--  Useful when you're not sure what type a variable is and you want to see
 		--  the definition of its *type*, not where it was *defined*.
 		map("grt", require("fzf-lua").lsp_typedefs, "[G]oto [T]ype Definition")
+	end,
+})
+
+require("conform").setup({
+	formatters_by_ft = {
+		lua = { "stylua" },
+		javascript = { "prettierd", "prettier", stop_after_first = true },
+		javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+		typescript = { "prettierd", "prettier", stop_after_first = true },
+		typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+		json = { "prettierd", "prettier", stop_after_first = true },
+		html = { "prettierd", "prettier", stop_after_first = true },
+		css = { "prettierd", "prettier", stop_after_first = true },
+		go = { "gofumpt", "goimports-reviser" },
+	},
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*",
+	callback = function(args)
+		require("conform").format({ buffnr = args.buf })
 	end,
 })
 
