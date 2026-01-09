@@ -1,7 +1,7 @@
 require("jmore.core")
 
 vim.pack.add({
-	{ src = "https://github.com/rose-pine/neovim" },
+	{ src = "https://github.com/RRethy/base16-nvim" },
 	{ src = "https://github.com/neovim/nvim-lspconfig" },
 	{ src = "https://github.com/mason-org/mason.nvim" },
 	{ src = "https://github.com/mason-org/mason-lspconfig.nvim" },
@@ -16,13 +16,23 @@ vim.pack.add({
 	{ src = "https://github.com/folke/which-key.nvim" },
 })
 
-local default_color = "rose-pine"
-vim.cmd("colorscheme " .. default_color)
+local function set_theme()
+	if vim.o.background == "light" then
+		vim.cmd("colorscheme base16-one-light")
+	else
+		-- vim.cmd("colorscheme base16-primer-dark")
+		vim.cmd("colorscheme base16-darkmoss")
+	end
+	vim.cmd("mode")
+end
+
+set_theme()
 
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({
 	ensure_installed = {
+		"dockerls",
 		"eslint",
 		"eslint_d",
 		"gopls",
