@@ -33,7 +33,6 @@ require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({
 	ensure_installed = {
 		"dockerls",
-		"eslint",
 		"eslint_d",
 		"gopls",
 		"gofumpt",
@@ -41,18 +40,19 @@ require("mason-tool-installer").setup({
 		"gopls",
 		"gotests",
 		"lua_ls",
-		"prettier",
+		"postgres_lsp",
+		"pgformatter",
 		"prettierd",
 		"prismals",
 		"stylua",
-		"ts_ls",
+		"vtsls",
 	},
 })
 require("fidget").setup()
 require("blink.cmp").setup()
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "go", "markdown", "lua", "typescript", "javascript", "prisma" },
+	pattern = { "go", "markdown", "lua", "typescript", "javascript", "prisma", "sql" },
 	callback = function()
 		vim.treesitter.start()
 	end,
@@ -152,6 +152,7 @@ require("conform").setup({
 		html = { "prettierd", "prettier", stop_after_first = true },
 		css = { "prettierd", "prettier", stop_after_first = true },
 		go = { "gofumpt", "goimports-reviser" },
+		sql = { "pg_format" },
 	},
 })
 
