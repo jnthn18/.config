@@ -23,10 +23,15 @@ local function set_theme()
 		-- vim.cmd("colorscheme base16-primer-dark")
 		vim.cmd("colorscheme base16-darkmoss")
 	end
-	vim.cmd("mode")
 end
 
 set_theme()
+
+vim.api.nvim_create_autocmd("OptionSet", {
+	pattern = "background",
+	group = vim.api.nvim_create_augroup("AutoBgScheme", { clear = true }),
+	callback = set_theme,
+})
 
 require("mason").setup()
 require("mason-lspconfig").setup()
