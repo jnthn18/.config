@@ -37,8 +37,8 @@ require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({
 	ensure_installed = {
+		"biome",
 		"dockerls",
-		"eslint_d",
 		"gopls",
 		"gofumpt",
 		"goimports-reviser",
@@ -50,7 +50,6 @@ require("mason-tool-installer").setup({
 		"prettierd",
 		"prismals",
 		"stylua",
-		"vtsls",
 	},
 })
 require("fidget").setup()
@@ -149,11 +148,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
-		javascript = { "prettierd", "prettier", stop_after_first = true },
-		javascriptreact = { "prettierd", "prettier", stop_after_first = true },
-		typescript = { "prettierd", "prettier", stop_after_first = true },
-		typescriptreact = { "prettierd", "prettier", stop_after_first = true },
-		json = { "prettierd", "prettier", stop_after_first = true },
+		javascript = { "biome" },
+		javascriptreact = { "biome" },
+		typescript = { "biome" },
+		typescriptreact = { "biome" },
+		json = { "biome" },
 		html = { "prettierd", "prettier", stop_after_first = true },
 		css = { "prettierd", "prettier", stop_after_first = true },
 		go = { "gofumpt", "goimports-reviser" },
