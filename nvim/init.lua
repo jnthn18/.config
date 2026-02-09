@@ -50,6 +50,7 @@ require("mason-tool-installer").setup({
 		"prettierd",
 		"prismals",
 		"stylua",
+		"vtsls",
 	},
 })
 require("fidget").setup()
