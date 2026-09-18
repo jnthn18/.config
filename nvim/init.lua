@@ -51,6 +51,7 @@ require("mason-tool-installer").setup({
 		"prismals",
 		"stylua",
 		"vtsls",
+		"pylsp",
 	},
 })
 require("fidget").setup()
